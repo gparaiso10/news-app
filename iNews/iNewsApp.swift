@@ -11,7 +11,15 @@ import SwiftUI
 struct iNewsApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            RootView()
+        }
+    }
+}
+
+struct RootView: View {
+    var body: some View {
+        RouterView {
+            NewsListView()
         }
     }
 }

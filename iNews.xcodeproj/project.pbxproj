@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		8BEBA59C2CB7242600092E8D /* NW-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8BEBA59B2CB7242600092E8D /* NW-Info.plist */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		8BEBA52A2CB68CAB00092E8D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -27,6 +31,7 @@
 		8BEBA5192CB68CAA00092E8D /* iNews.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iNews.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BEBA5292CB68CAB00092E8D /* iNewsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iNewsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BEBA5332CB68CAB00092E8D /* iNewsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iNewsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		8BEBA59B2CB7242600092E8D /* NW-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "NW-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -75,6 +80,7 @@
 		8BEBA5102CB68CAA00092E8D = {
 			isa = PBXGroup;
 			children = (
+				8BEBA59B2CB7242600092E8D /* NW-Info.plist */,
 				8BEBA51B2CB68CAA00092E8D /* iNews */,
 				8BEBA52C2CB68CAB00092E8D /* iNewsTests */,
 				8BEBA5362CB68CAB00092E8D /* iNewsUITests */,
@@ -212,6 +218,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8BEBA59C2CB7242600092E8D /* NW-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -329,6 +336,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
 			};
 			name = Debug;
 		};
@@ -384,6 +392,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_VERSION = 6.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -411,7 +420,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = me.iNews;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -439,7 +448,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = me.iNews;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -456,7 +465,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = me.iNewsTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iNews.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/iNews";
 			};
@@ -474,7 +483,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = me.iNewsTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iNews.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/iNews";
 			};
@@ -490,7 +499,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = me.iNewsUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = iNews;
 			};
@@ -506,7 +515,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = me.iNewsUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = iNews;
 			};
