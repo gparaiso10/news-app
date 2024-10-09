@@ -15,11 +15,3 @@ struct iNewsApp: App {
         }
     }
 }
-
-struct RootView: View {
-    var body: some View {
-        RouterView {
-            NewsListView()
-        }
-    }
-}

@@ -7,6 +7,16 @@
 
 import Foundation
 
+
+struct APIResponse: Codable {
+    let status: String?
+    let totalResults: Int?
+    let articles: [Article]?
+    let code: String?
+    let message: String?
+}
+
+
 struct Article: Codable {
     let source: Source
     let author: String?
@@ -17,14 +27,6 @@ struct Article: Codable {
     let publishedAt: String?
     let content: String?
 
-}
-
-struct APIResponse: Codable {
-    let status: String?
-    let totalResults: Int?
-    let articles: [Article]?
-    let code: String?
-    let message: String?
 }
 
 enum Status: String, Codable {

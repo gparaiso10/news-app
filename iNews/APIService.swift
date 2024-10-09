@@ -16,7 +16,7 @@ class APIService {
         components.path = "/v2/everything"
         components.queryItems = [
             URLQueryItem(name: "apiKey", value: apiKey),
-            URLQueryItem(name: "q", value: "Apple"), //search for articles that mention "value"
+            URLQueryItem(name: "q", value: "Apple"), //search for articles that mention value
             URLQueryItem(name: "from", value: "2024-10-08"), //yyyy-mm-dd
             URLQueryItem(name: "sortBy", value: "popularity") //relevancy, popularity, publishedAt
         ]
@@ -40,7 +40,6 @@ class APIService {
         }
     }
 }
-
 
 enum ApiError: Error {
     case badURL

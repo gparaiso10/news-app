@@ -7,16 +7,21 @@
 
 import SwiftUI
 
-struct NewsListView: View {
+struct MainPage: View {
     @EnvironmentObject var router: Router
     @State var articles: [ArticleModel] = []
     @State var isLoading: Bool = false
     @State var errorMessage: String?
     
     var body: some View {
-        if errorMessage != nil {
-            Text(errorMessage!)
-        } else {
+        VStack {
+            Spacer()
+            if errorMessage != nil {
+                Text(errorMessage!)
+            }
+            if isLoading {
+                Text("Loading...")
+            }
             List(articles) { article in
                 Button(action: { showNewsDetail(article) }) {
                     NewsItemView(article: article)
@@ -26,9 +31,7 @@ struct NewsListView: View {
             .task {
                 await fetchNews()
             }
-            .sheet(isPresented: $isLoading, content: {
-                Text("Loading...")
-            })
+            Spacer()
         }
     }
     
@@ -46,46 +49,53 @@ struct NewsListView: View {
             }
             isLoading = false
         } catch let error as ApiError {
-            switch error {
-            case .badURL:
-                errorMessage = "Bad URL"
-            case .badResponse:
-                errorMessage = "Bad Response"
-            case .badData:
-                errorMessage = "Bad data"
-            }
-            isLoading = false
-            
+            handleAPIError(error: error)
         } catch {
-            errorMessage = "Unkown Error"
-            isLoading = false
+            handleError(error: error)
         }
     }
-        
+    
     func showNewsDetail(_ article: ArticleModel) {
         router.navigateTo(.newsDetail(article))
     }
     
+    func handleAPIError(error: ApiError) {
+        switch error {
+        case .badURL:
+            errorMessage = "Bad URL"
+        case .badResponse:
+            errorMessage = "Bad Response"
+        case .badData:
+            errorMessage = "Bad data"
+        }
+        isLoading = false
+    }
+    
+    func handleError(error: Error) {
+        errorMessage = "Unkown Error"
+        isLoading = false
+    }
 }
 
-
-struct NewsItemView: View {
-    let article: ArticleModel
+struct NewsListView: View { // TODO: Not working??
+    @State var articles: [ArticleModel]
+    var onTapArticle: (ArticleModel) -> Void
     
     var body: some View {
-        VStack (alignment: .leading) {
-            Spacer()
-            Text(article.title)
-            Text(article.description)
-                .frame(height: 48)
-                .truncationMode(.tail)
-            Spacer()
+        List(articles) { article in
+            Button(action: { onTapArticle(article) }) {
+                NewsItemView(article: article)
+            }
         }
+        .listStyle(.inset)
     }
 }
 
 
-
-//#Preview {
-//    NewsListView()
-//}
+struct ErrorView: View {
+    @State var message: String
+    
+    var body: some View {
+        Text(message)
+    }
+}

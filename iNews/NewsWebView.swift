@@ -52,8 +52,3 @@ struct WebView: UIViewRepresentable {
         webView.load(URLRequest(url: URL(string: webPage)!))
     }
 }
-
-
-//#Preview {
-//    NewsDetailView(article: )
-//}

@@ -8,7 +8,6 @@
 import SwiftUI
 
 class Router: ObservableObject {
-    // Contains the possible destinations in our Router
     enum Route: Hashable {
         case newsList
         case newsDetail(ArticleModel)
@@ -19,7 +18,7 @@ class Router: ObservableObject {
     @MainActor @ViewBuilder func view(for route: Route) -> some View {
         switch route {
         case .newsList:
-            NewsListView()
+            MainPage()
         case .newsDetail(let article):
             NewsWebView(article: article)
         }
