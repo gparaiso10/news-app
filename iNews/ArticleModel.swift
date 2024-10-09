@@ -10,7 +10,7 @@ import Foundation
 struct ArticleModel: Identifiable, Equatable, Hashable {
     let id = UUID()
     let source: String
-    let author: String?
+    let author: String
     let title: String
     let description: String
     let url: String
@@ -21,13 +21,13 @@ struct ArticleModel: Identifiable, Equatable, Hashable {
 
 extension ArticleModel {
     init(_ article: Article) {
-        self.init(source: article.source.name,
-                  author: article.author,
-                  title: article.title,
-                  description: article.description,
-                  url: article.url,
-                  urlToImage: article.urlToImage,
-                  publishedAt: article.publishedAt,
-                  content: article.content)
+        self.init(source: article.source.name ?? "",
+                  author: article.author ?? "",
+                  title: article.title ?? "",
+                  description: article.description ?? "",
+                  url: article.url ?? "",
+                  urlToImage: article.urlToImage ?? "",
+                  publishedAt: article.publishedAt ?? "",
+                  content: article.content ?? "")
     }
 }

@@ -24,34 +24,41 @@ struct NewsListView: View {
             }
             .listStyle(.inset)
             .task {
-                isLoading = true
-                do {
-                    let news = try await APIService().fetchNews()
-                    if news.status == Status.ok.rawValue {
-                        articles = news.articles.toModel()
-                    } else {
-                        articles = []
-                    }
-                    isLoading = false
-                } catch let error as ApiError {
-                    switch error {
-                    case .badURL:
-                        errorMessage = "Bad URL"
-                    case .badResponse:
-                        errorMessage = "Bad Response"
-                    case .badData:
-                        errorMessage = "Bad data"
-                    }
-                    isLoading = false
-                    
-                } catch {
-                    errorMessage = "Unkown Error"
-                    isLoading = false
-                }
+                await fetchNews()
             }
             .sheet(isPresented: $isLoading, content: {
                 Text("Loading...")
             })
+        }
+    }
+    
+    func fetchNews() async {
+        if !articles.isEmpty { return }
+        do {
+            isLoading = true
+            let news = try await APIService().fetchNews()
+            if news.status == Status.ok.rawValue {
+                articles = news.articles?
+                    .toModel()
+                    .filter{ $0.title != "[Removed]" } ?? []
+            } else {
+                articles = []
+            }
+            isLoading = false
+        } catch let error as ApiError {
+            switch error {
+            case .badURL:
+                errorMessage = "Bad URL"
+            case .badResponse:
+                errorMessage = "Bad Response"
+            case .badData:
+                errorMessage = "Bad data"
+            }
+            isLoading = false
+            
+        } catch {
+            errorMessage = "Unkown Error"
+            isLoading = false
         }
     }
         
