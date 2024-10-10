@@ -32,9 +32,7 @@ class APIService {
         }
         
         do {
-            let items = try JSONDecoder().decode(APIResponse.self, from: data)
-            print(items)
-            return items
+            return try JSONDecoder().decode(APIResponse.self, from: data)
         } catch {
             throw ApiError.badData
         }

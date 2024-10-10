@@ -11,19 +11,21 @@ class Router: ObservableObject {
     enum Route: Hashable {
         case newsList
         case newsDetail(ArticleModel)
+        case newsDetailWeb(ArticleModel)
     }
     
-    @Published var path: NavigationPath = NavigationPath()
+    @Published var path: [Route] = []
     
     @MainActor @ViewBuilder func view(for route: Route) -> some View {
         switch route {
-        case .newsList:
-            MainPage()
+        case .newsList: MainPage()
         case .newsDetail(let article):
+            NewsDetailView(article: article)
+        case .newsDetailWeb(let article):
             NewsWebView(article: article)
         }
     }
-    
+
     func navigateTo(_ appRoute: Route) {
         path.append(appRoute)
     }

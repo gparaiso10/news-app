@@ -14,7 +14,6 @@ struct NewsItemView: View {
         VStack (alignment: .leading) {
             Spacer()
             Text(article.title)
-            Text(article.description)
                 .frame(height: 48)
                 .truncationMode(.tail)
             Spacer()

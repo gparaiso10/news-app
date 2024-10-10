@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+//TODO: move functions to viewModel
 
 struct MainPage: View {
     @EnvironmentObject var router: Router
@@ -15,23 +16,20 @@ struct MainPage: View {
     
     var body: some View {
         VStack {
-            Spacer()
-            if errorMessage != nil {
-                Text(errorMessage!)
+            if let errorMessage {
+                ErrorView(message: errorMessage)
             }
             if isLoading {
-                Text("Loading...")
+                LoadingView()
             }
-            List(articles) { article in
-                Button(action: { showNewsDetail(article) }) {
-                    NewsItemView(article: article)
-                }
+            else {
+                Spacer()
+                NewsListView(articles: articles, onTapArticle: showNewsDetail)
+                Spacer()
             }
-            .listStyle(.inset)
-            .task {
-                await fetchNews()
-            }
-            Spacer()
+        }
+        .task {
+            await fetchNews()
         }
     }
     
@@ -77,25 +75,6 @@ struct MainPage: View {
     }
 }
 
-struct NewsListView: View { // TODO: Not working??
-    @State var articles: [ArticleModel]
-    var onTapArticle: (ArticleModel) -> Void
-    
-    var body: some View {
-        List(articles) { article in
-            Button(action: { onTapArticle(article) }) {
-                NewsItemView(article: article)
-            }
-        }
-        .listStyle(.inset)
-    }
-}
-
-
-struct ErrorView: View {
-    @State var message: String
-    
-    var body: some View {
-        Text(message)
-    }
-}
+//#Preview {
+//    MainPage()
+//}
