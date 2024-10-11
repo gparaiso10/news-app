@@ -10,46 +10,24 @@ import SwiftUI
 
 struct MainPage: View {
     @EnvironmentObject var router: Router
-    @State var articles: [ArticleModel] = []
-    @State var isLoading: Bool = false
-    @State var errorMessage: String?
+    @ObservedObject var viewModel = ViewModel()
     
     var body: some View {
         VStack {
-            if let errorMessage {
+            if let errorMessage = viewModel.errorMessage {
                 ErrorView(message: errorMessage)
             }
-            if isLoading {
+            if viewModel.isLoading {
                 LoadingView()
             }
             else {
                 Spacer()
-                NewsListView(articles: articles, onTapArticle: showNewsDetail)
+                NewsListView(articles: viewModel.articles, onTapArticle: showNewsDetail)
                 Spacer()
             }
         }
         .task {
-            await fetchNews()
-        }
-    }
-    
-    func fetchNews() async {
-        if !articles.isEmpty { return }
-        do {
-            isLoading = true
-            let news = try await APIService().fetchNews()
-            if news.status == Status.ok.rawValue {
-                articles = news.articles?
-                    .toModel()
-                    .filter{ $0.title != "[Removed]" } ?? []
-            } else {
-                articles = []
-            }
-            isLoading = false
-        } catch let error as ApiError {
-            handleAPIError(error: error)
-        } catch {
-            handleError(error: error)
+            await viewModel.fetchNews()
         }
     }
     
@@ -57,22 +35,6 @@ struct MainPage: View {
         router.navigateTo(.newsDetail(article))
     }
     
-    func handleAPIError(error: ApiError) {
-        switch error {
-        case .badURL:
-            errorMessage = "Bad URL"
-        case .badResponse:
-            errorMessage = "Bad Response"
-        case .badData:
-            errorMessage = "Bad data"
-        }
-        isLoading = false
-    }
-    
-    func handleError(error: Error) {
-        errorMessage = "Unkown Error"
-        isLoading = false
-    }
 }
 
 //#Preview {
