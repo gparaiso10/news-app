@@ -24,16 +24,3 @@ struct FavouriteNewsView: View {
     }
 }
 
-
-extension FavouriteNewsView {
-    
-    @MainActor
-    class ViewModel: ObservableObject {
-        @Published var favouriteArticles: [ArticleModel] = []
-        
-        // TODO: implement Actor to fetch and save favourites
-        func fetchFavourites() async {
-            favouriteArticles = ArticleModel.mockArray()
-        }
-    }
-}

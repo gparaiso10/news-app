@@ -61,7 +61,7 @@ extension MainPage {
             }
         }
         
-        func handleAPIError(error: ApiError) {
+        func handleAPIError(error: APIError) {
             switch error {
             case .badURL:
                 errorMessage = "Bad URL"
@@ -74,8 +74,8 @@ extension MainPage {
         }
         
         func handleError(error: Error) {
-            if error is ApiError {
-                handleAPIError(error: error as! ApiError)
+            if error is APIError {
+                handleAPIError(error: error as! APIError)
                 return
             }
             errorMessage = "Unkown Error"

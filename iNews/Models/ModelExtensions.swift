@@ -5,8 +5,6 @@
 //  Created by Paraiso, Gustavo Alexandre on 10/10/2024.
 //
 
-import Foundation
-
 extension ArticleModel {
     init(_ article: Article) {
         self.init(source: article.source.name ?? "",
@@ -58,5 +56,18 @@ extension ArticleModel {
                 content: "Now that Hurricane Milton has moved offshore, the risk of severe thunderstorms and tornadoes in Florida has diminished. However, the risk of flash flooding and damaging winds remains. Due to high tides, rivers filling up, and the sheer volume of rain that has fallen, major urban flooding is still likely - especially as there is yet more rain to come in central and northern Florida. High speed winds - hurricane force in places - are also still battering the east of Florida. They could bring a risk of life-threatening storm surges from east-central Florida right up to Georgia and, to a lesser degree, South Carolina. The storm may also pass close by to Bermuda. However, the proximity of this storm to Bermuda and the US east coast over the next few days will cause large swells and dangerous rip currents."
             )
         ]
+    }
+}
+
+
+extension Article {
+    func toModel() -> ArticleModel {
+        ArticleModel(self)
+    }
+}
+
+extension Array where Element == Article {
+    func toModel() -> [ArticleModel] {
+        self.map { ArticleModel($0)}
     }
 }

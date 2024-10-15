@@ -7,10 +7,6 @@
 
 import SwiftUI
 
-enum Tab {
-    case home, favourites
-}
-
 struct TabScreenView: View {
     
     @State var selectedTab: Tab = .home

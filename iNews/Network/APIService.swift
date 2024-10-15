@@ -7,29 +7,6 @@
 
 import Foundation
 
-enum Language: String {
-    case ar
-    case de
-    case en
-    case es
-    case fr
-    case he
-    case it
-    case nl
-    case no
-    case pt
-    case ru
-    case sv
-    case ud
-    case zh
-}
-
-enum SortBy: String {
-    case relevancy
-    case popularity
-    case publishedAt
-}
-
 struct APIService: Sendable {
     
     //max pageSize = 100
@@ -58,19 +35,19 @@ struct APIService: Sendable {
         ]
         
         guard let url = components.url else {
-            throw ApiError.badURL
+            throw APIError.badURL
         }
         
         let (data, response) = try await URLSession.shared.data(from: url)
         
         guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
-            throw ApiError.badResponse
+            throw APIError.badResponse
         }
         
         do {
             return try JSONDecoder().decode(APIResponse.self, from: data)
         } catch {
-            throw ApiError.badData
+            throw APIError.badData
         }
     }
     
@@ -96,41 +73,19 @@ struct APIService: Sendable {
         
         
         guard let url = components.url else {
-            throw ApiError.badURL
+            throw APIError.badURL
         }
         
         let (data, response) = try await URLSession.shared.data(from: url)
         
         guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
-            throw ApiError.badResponse
+            throw APIError.badResponse
         }
         
         do {
             return try JSONDecoder().decode(APIResponse.self, from: data)
         } catch {
-            throw ApiError.badData
+            throw APIError.badData
         }
-    }
-}
-
-enum ApiError: Error {
-    case badURL
-    case badResponse
-    case badData
-}
-
-
-extension APIService {
-    private var apiKey: String {
-      get {
-        guard let filePath = Bundle.main.path(forResource: "NW-Info", ofType: "plist") else {
-          fatalError("Couldn't find file 'NW-Info.plist'.")
-        }
-        let plist = NSDictionary(contentsOfFile: filePath)
-        guard let value = plist?.object(forKey: "API_KEY") as? String else {
-          fatalError("Couldn't find key 'API_KEY'.")
-        }
-        return value
-      }
     }
 }
