@@ -11,25 +11,51 @@ extension MainPage {
     
     @MainActor
     class ViewModel: ObservableObject {
-        @Published var articles: [ArticleModel] = []
+        private let api = APIService()
+        @Published var articles: [NewsCategory : [ArticleModel]] = [:]
         @Published var isLoading: Bool = false
         @Published var errorMessage: String?
         
-        func fetchNews() async {
+        func bind() async {
             if !articles.isEmpty { return }
+            await fetchHeadlinesByCategory()
+        }
+        
+        func fetchNews() async {
+//            do {
+//                isLoading = true
+//                let news = try await APIService().fetchNews()
+//                if news.status == Status.ok.rawValue {
+//                    articles = news.articles?
+//                        .toModel()
+//                        .filter{ $0.title != "[Removed]" } ?? []
+//                } else {
+//                    articles = []
+//                }
+//                isLoading = false
+//            } catch {
+//                handleError(error: error)
+//            }
+        }
+        
+        func fetchHeadlinesByCategory() async {
             do {
                 isLoading = true
-                let news = try await APIService().fetchNews()
-                if news.status == Status.ok.rawValue {
-                    articles = news.articles?
-                        .toModel()
-                        .filter{ $0.title != "[Removed]" } ?? []
-                } else {
-                    articles = []
+                
+                try await withThrowingTaskGroup(of: (category: NewsCategory, news: [Article]).self) { group in
+                    for category in NewsCategory.allCases {
+                        group.addTask {
+                            let news = try await self.api.fetchHeadlines(category: category)
+                            return (category, news.articles ?? [])
+                        }
+                    }
+                    
+                    for try await segment in group {
+                        self.articles[segment.category] = segment.news.toModel().filter{ $0.title != "[Removed]" }
+                    }
                 }
+                print(self.articles)
                 isLoading = false
-            } catch let error as ApiError {
-                handleAPIError(error: error)
             } catch {
                 handleError(error: error)
             }
@@ -48,6 +74,10 @@ extension MainPage {
         }
         
         func handleError(error: Error) {
+            if error is ApiError {
+                handleAPIError(error: error as! ApiError)
+                return
+            }
             errorMessage = "Unkown Error"
             isLoading = false
         }

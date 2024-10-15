@@ -8,7 +8,7 @@
 import Foundation
 
 
-struct APIResponse: Codable {
+struct APIResponse: Codable, Sendable {
     let status: String?
     let totalResults: Int?
     let articles: [Article]?
@@ -17,7 +17,7 @@ struct APIResponse: Codable {
 }
 
 
-struct Article: Codable {
+struct Article: Codable, Sendable {
     let source: Source
     let author: String?
     let title: String?

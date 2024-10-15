@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-//TODO: move functions to viewModel
 
 struct MainPage: View {
     @EnvironmentObject var router: Router
@@ -21,13 +20,11 @@ struct MainPage: View {
                 LoadingView()
             }
             else {
-                Spacer()
-                NewsListView(articles: viewModel.articles, onTapArticle: showNewsDetail)
-                Spacer()
+                HeadlinesView(sections: viewModel.articles, onTapArticle: showNewsDetail)
             }
         }
         .task {
-            await viewModel.fetchNews()
+            await viewModel.bind()
         }
     }
     
@@ -36,6 +33,7 @@ struct MainPage: View {
     }
     
 }
+
 
 //#Preview {
 //    MainPage()

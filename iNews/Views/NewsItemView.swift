@@ -9,6 +9,7 @@ import SwiftUI
 
 struct NewsItemView: View {
     let article: ArticleModel
+    let onTap: (ArticleModel) -> Void
     
     var body: some View {
         VStack (alignment: .leading) {
@@ -16,6 +17,9 @@ struct NewsItemView: View {
             Text(article.title)
                 .frame(height: 48)
                 .truncationMode(.tail)
+                .onTapGesture {
+                    onTap(article)
+                }
             Spacer()
         }
     }

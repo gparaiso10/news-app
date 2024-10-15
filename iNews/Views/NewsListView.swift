@@ -12,11 +12,23 @@ struct NewsListView: View {
     var onTapArticle: (ArticleModel) -> Void
     
     var body: some View {
-        List(articles) { article in
-            Button(action: { onTapArticle(article) }) {
-                NewsItemView(article: article)
+        VStack(alignment: .leading) {
+            ForEach(articles, id: \.id) { article in
+                NewsItemView(article: article, onTap: onTapArticle)
+                    .frame(height: 40)
+                    .padding(.vertical, 16)
             }
         }
-        .listStyle(.inset)
     }
 }
+
+
+#Preview {
+    NewsListView(articles: ArticleModel.mockArray(), onTapArticle: { _ in})
+}
+
+
+
+
+
+
