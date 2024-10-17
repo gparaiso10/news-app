@@ -12,11 +12,11 @@ struct FavouriteNewsView: View {
     @ObservedObject var viewModel = ViewModel()
     
     var body: some View {
-        NewsListView(articles: viewModel.favouriteArticles,
-                     onTapArticle: showDetail)
-        .task {
-            await viewModel.fetchFavourites()
-        }
+        FavouriteNewsListView(articles: viewModel.favouriteArticles, onTapArticle: showDetail)
+            .withToolbar()
+            .task {
+                await viewModel.fetchFavourites()
+            }
     }
     
     func showDetail(_ article: ArticleModel) {
@@ -24,3 +24,6 @@ struct FavouriteNewsView: View {
     }
 }
 
+#Preview {
+    FavouriteNewsView().environmentObject(Router())
+}

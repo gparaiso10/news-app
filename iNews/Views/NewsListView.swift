@@ -22,7 +22,6 @@ struct NewsListView: View {
     }
 }
 
-
 #Preview {
     NewsListView(articles: ArticleModel.mockArray(), onTapArticle: { _ in})
 }

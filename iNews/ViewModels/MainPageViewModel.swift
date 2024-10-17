@@ -11,10 +11,11 @@ extension MainPage {
     
     @MainActor
     class ViewModel: ObservableObject {
-        private let api = APIService()
+        private let api = NewsAPITest() //
         @Published var articles: [NewsCategory : [ArticleModel]] = [:]
         @Published var isLoading: Bool = false
         @Published var errorMessage: String?
+        @Published var currentPage: Int = 0
         
         func bind() async {
             if !articles.isEmpty { return }
@@ -45,7 +46,7 @@ extension MainPage {
                 try await withThrowingTaskGroup(of: (category: NewsCategory, news: [Article]).self) { group in
                     for category in NewsCategory.allCases {
                         group.addTask {
-                            let news = try await self.api.fetchHeadlines(category: category)
+                            let news = try await self.api.fetchHeadlines(category: category, page: self.currentPage)
                             return (category, news.articles ?? [])
                         }
                     }
@@ -54,7 +55,6 @@ extension MainPage {
                         self.articles[segment.category] = segment.news.toModel().filter{ $0.title != "[Removed]" }
                     }
                 }
-                print(self.articles)
                 isLoading = false
             } catch {
                 handleError(error: error)

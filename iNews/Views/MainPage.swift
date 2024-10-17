@@ -21,11 +21,18 @@ struct MainPage: View {
             }
             else {
                 HeadlinesView(sections: viewModel.articles, onTapArticle: showNewsDetail)
+//                Button(action: { viewModel.currentPage += 1 }) {
+//                    Text("Next Page")
+//                }
             }
         }
+        .withToolbar()
         .task {
             await viewModel.bind()
         }
+//        .task(id: viewModel.currentPage, {
+//            await viewModel.fetchHeadlinesByCategory()
+//        })
     }
     
     func showNewsDetail(_ article: ArticleModel) {

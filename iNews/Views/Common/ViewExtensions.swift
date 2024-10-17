@@ -9,7 +9,7 @@ import SwiftUI
 
 
 extension View {
-    @MainActor @ViewBuilder func withToolbar(closeAction: @escaping () -> Void, leadingText: String? = nil, withBorder: Bool = false) -> some View {
+    @MainActor @ViewBuilder func withToolbar(closeAction: (() -> Void)? = nil, leadingText: String? = nil, withBorder: Bool = false) -> some View {
         GeometryReader { geometry in
             self
                 .toolbar {
@@ -22,17 +22,20 @@ extension View {
                             }
                         }
                     }
-                    ToolbarItem(placement: .topBarTrailing) {
-                        Button(action: closeAction) {
-                            Image(systemName: "xmark")
-                                .tint(.black)
-                                .frame(height: 8)
-                                .padding(4)
+                    
+                    if let closeAction {
+                        ToolbarItem(placement: .topBarTrailing) {
+                            Button(action: closeAction) {
+                                Image(systemName: "xmark")
+                                    .tint(.black)
+                                    .frame(height: 8)
+                                    .padding(4)
+                            }
                         }
                     }
                 }
                 .navigationBarBackButtonHidden()
-                .toolbarBackground(.thickMaterial, for: .navigationBar)
+                .toolbarBackground(.white, for: .navigationBar)
                 .toolbarBackgroundVisibility(.visible, for: .navigationBar)
         }
         .overlay(withBorder ?

@@ -6,5 +6,5 @@
 //
 
 enum Tab {
-    case home, favourites
+    case home, favourites, search
 }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension APIService {
+extension NewsAPI {
     var apiKey: String {
       get {
         guard let filePath = Bundle.main.path(forResource: "NW-Info", ofType: "plist") else {

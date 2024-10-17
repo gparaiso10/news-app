@@ -7,7 +7,12 @@
 
 import Foundation
 
-struct APIService: Sendable {
+protocol NewsAPIService: Sendable {
+    func fetchNews(query: String?, sources: [String]?, domains: [String]?, excludeDomains: [String]?, from: String?, to: String?, language: Language, sortBy: SortBy, page: Int, pageSize: Int) async throws -> APIResponse
+    func fetchHeadlines(country: String?, category: NewsCategory?, sources: [String]?, query: String?, page: Int, pageSize: Int) async throws -> APIResponse
+}
+
+struct NewsAPI: NewsAPIService {
     
     //max pageSize = 100
     func fetchNews(query: String? = nil, sources: [String]? = nil, domains: [String]? = nil, excludeDomains: [String]? = nil, from: String? = nil, to: String? = nil, language: Language = .en, sortBy: SortBy = .relevancy, page: Int = 0, pageSize: Int = 100) async throws -> APIResponse {
@@ -16,9 +21,9 @@ struct APIService: Sendable {
         components.host = "newsapi.org"
         components.path = "/v2/everything"
         
-        let sourcesString = sources?.reduce("", { "\($0), \($1)"}) ?? ""
-        let domainsString = domains?.reduce("", { "\($0), \($1)"}) ?? ""
-        let excludedDomainsString = excludeDomains?.reduce("", { "\($0), \($1)"}) ?? ""
+        let sourcesString = sources?.joined(separator: ", ") ?? ""
+        let domainsString = domains?.joined(separator: ", ") ?? ""
+        let excludedDomainsString = excludeDomains?.joined(separator: ", ") ?? ""
         
         components.queryItems = [
             URLQueryItem(name: "apiKey", value: apiKey),
@@ -59,7 +64,7 @@ struct APIService: Sendable {
         components.path = "/v2/top-headlines"
         
         
-        let sourcesString = sources?.reduce("", { "\($0), \($1)"}) ?? ""
+        let sourcesString = sources?.joined(separator: ", ") ?? ""
         
         components.queryItems = [
             URLQueryItem(name: "apiKey", value: apiKey),
@@ -87,5 +92,26 @@ struct APIService: Sendable {
         } catch {
             throw APIError.badData
         }
+    }
+}
+
+struct NewsAPITest: NewsAPIService {
+    
+    //max pageSize = 100
+    func fetchNews(query: String? = nil, sources: [String]? = nil, domains: [String]? = nil, excludeDomains: [String]? = nil, from: String? = nil, to: String? = nil, language: Language = .en, sortBy: SortBy = .relevancy, page: Int = 0, pageSize: Int = 100) async throws -> APIResponse {
+        APIResponse(status: Status.ok.rawValue,
+                    totalResults: ArticleModel.mockArray().count,
+                    articles: ArticleModel.mockArray().toArticle(),
+                    code: nil,
+                    message: nil)
+    }
+    
+    // max pageSize = 100
+    func fetchHeadlines(country: String? = nil, category: NewsCategory? = nil, sources: [String]? = nil, query: String? = nil, page: Int = 0, pageSize: Int = 20) async throws -> APIResponse {
+        APIResponse(status: Status.ok.rawValue,
+                    totalResults: ArticleModel.mockArray().count,
+                    articles: ArticleModel.mockArray().toArticle(),
+                    code: nil,
+                    message: nil)
     }
 }

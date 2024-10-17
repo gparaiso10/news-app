@@ -13,6 +13,7 @@ struct TabScreenView: View {
         
     @State var homeRouter = Router()
     @State var favouritesRouter = Router()
+    @State var searchRouter = Router()
 
     var body: some View {
         
@@ -25,12 +26,21 @@ struct TabScreenView: View {
                     }
                     .tag(Tab.home)
                 
+                RouterView(rootView: SearchPage())
+                    .environmentObject(searchRouter)
+                    .tabItem {
+                        Label("Search", systemImage: "magnifyingglass")
+                    }
+                    .tag(Tab.search)
+                
                 RouterView(rootView: FavouriteNewsView())
                     .environmentObject(favouritesRouter)
                     .tabItem {
                         Label("Favourites", systemImage: "heart")
                     }
                     .tag(Tab.favourites)
+                
+
             }
             .toolbarBackground(.thickMaterial, for: .tabBar)
             .toolbarBackgroundVisibility(.visible, for: .tabBar)

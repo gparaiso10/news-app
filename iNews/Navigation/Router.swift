@@ -9,7 +9,6 @@ import SwiftUI
 
 class Router: ObservableObject {
     enum Route: Hashable {
-        case newsList
         case newsDetail(ArticleModel)
         case newsDetailWeb(ArticleModel)
     }
@@ -18,7 +17,6 @@ class Router: ObservableObject {
     
     @MainActor @ViewBuilder func view(for route: Route) -> some View {
         switch route {
-        case .newsList: MainPage()
         case .newsDetail(let article):
             NewsDetailView(article: article)
         case .newsDetailWeb(let article):

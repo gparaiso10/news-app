@@ -5,6 +5,8 @@
 //  Created by Paraiso, Gustavo Alexandre on 10/10/2024.
 //
 
+import Foundation
+
 extension ArticleModel {
     init(_ article: Article) {
         self.init(source: article.source.name ?? "",
@@ -15,6 +17,12 @@ extension ArticleModel {
                   urlToImage: article.urlToImage ?? "",
                   publishedAt: article.publishedAt ?? "",
                   content: article.content ?? "")
+    }
+}
+
+extension Article {
+    init(_ article: ArticleModel) {
+        self.init(source: .init(id: UUID().uuidString, name: article.source), author: article.author, title: article.title, description: article.description, url: article.url, urlToImage: article.urlToImage, publishedAt: article.publishedAt, content: article.content)
     }
 }
 
@@ -34,6 +42,18 @@ extension ArticleModel {
     
     static func mockArray() -> [ArticleModel] {
         return [
+            ArticleModel.mockArticle(),
+            ArticleModel.mockArticle(),
+            ArticleModel.mockArticle(),
+            ArticleModel.mockArticle(),
+            ArticleModel.mockArticle(),
+            ArticleModel.mockArticle(),
+            ArticleModel.mockArticle(),
+            ArticleModel.mockArticle(),
+            ArticleModel.mockArticle(),
+            ArticleModel.mockArticle(),
+            ArticleModel.mockArticle(),
+            ArticleModel.mockArticle(),
             ArticleModel.mockArticle(),
             ArticleModel(
                 source: "Tech News Daily",
@@ -66,8 +86,20 @@ extension Article {
     }
 }
 
+extension ArticleModel {
+    func toArticle() -> Article {
+        Article(self)
+    }
+}
+
 extension Array where Element == Article {
     func toModel() -> [ArticleModel] {
         self.map { ArticleModel($0)}
+    }
+}
+
+extension Array where Element == ArticleModel {
+    func toArticle() -> [Article] {
+        self.map { Article($0)}
     }
 }
