@@ -17,6 +17,7 @@ struct TabScreenView: View {
     
     @State var mainPage = MainPage()
     @State var searchPage = SearchPage()
+    @State var favouritesView = FavouriteNewsView()
 
     var body: some View {
         
@@ -36,10 +37,10 @@ struct TabScreenView: View {
                     }
                     .tag(Tab.search)
                 
-                RouterView(rootView: FavouriteNewsView())
+                RouterView(rootView: favouritesView)
                     .environmentObject(favouritesRouter)
                     .tabItem {
-                        Label("Favourites", systemImage: "heart")
+                        Label("Shelf", systemImage: "books.vertical.fill")
                     }
                     .tag(Tab.favourites)
                 
