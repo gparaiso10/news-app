@@ -6,76 +6,67 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct NewsDetailView: View {
     @EnvironmentObject var router: Router
-    var article: ArticleModel
+    @ObservedObject var viewModel: ViewModel
+    
+    @Environment(\.modelContext) private var context
+    @Query private var favourites: [ArticleModel]
     
     var body: some View {
         VStack(alignment: .leading) {
-            NewsDetailHeader(title: article.title)
-            NewsDetailBody(source: article.source, author: article.author, imageURL: article.urlToImage, description: article.description, content: article.content, showFullArticle: showFullArticle)
+            NewsDetailHeader(title: viewModel.article.title, isFavourite: viewModel.isFavourite, updateFavourite: updateFavourite)
+            NewsDetailBody(source: viewModel.article.source, author: viewModel.article.author, imageURL: viewModel.article.urlToImage, description: viewModel.article.articleDescription, content: viewModel.article.content, date: viewModel.article.publishedAt, showFullArticle: showFullArticle)
+        }
+        .onAppear {
+            checkFavourites()
         }
         .padding(16)
         .withToolbar(closeAction: router.navigateBack)
     }
     
+    func updateFavourite() {
+        viewModel.isFavourite ? deleteFromFavourites() : addToFavourites()
+        checkFavourites()
+    }
+    
+    func addToFavourites() {
+        let article = viewModel.article
+        context.insert(article)
+        do {
+            try context.save()
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
+    func deleteFromFavourites() {
+        let article = viewModel.article
+        context.delete(article)
+        do {
+            try context.save()
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
+    func checkFavourites() {
+        viewModel.isFavourite = favourites.contains(where: {
+            $0.title == viewModel.article.title &&
+            $0.publishedAt == viewModel.article.publishedAt &&
+            $0.author == viewModel.article.author
+        })
+    }
+    
     func showFullArticle() {
-        router.navigateTo(.newsDetailWeb(article))
-    }
-}
-
-struct NewsDetailHeader: View {
-    var title: String
-    
-    var body: some View {
-        Text(title)
-            .bold()
-            .font(.system(size: 24))
-            .padding(.bottom, 16)
-    }
-}
-
-struct NewsDetailBody: View {
-    var source: String
-    var author: String
-    var imageURL: String
-    var description: String
-    var content: String
-    var showFullArticle: () -> Void
-    
-    var body: some View {
-        ScrollView {
-            VStack(alignment: .leading) {
-                HStack {
-                    Text(source)
-                    Spacer()
-                    Text(author)
-                }.padding(.bottom, 4)
-                AsyncImage(url: URL(string: imageURL)) { image in
-                    image
-                        .resizable()
-                        .frame(height: 250)
-                        .clipShape(.rect(cornerRadius: 8))
-                        .padding(.bottom, 8)
-                } placeholder: {
-                    LoadingView()
-                        .frame(height: 250)
-                }
-                Text(description)
-                    .padding(.bottom, 8)
-                Text(content)
-                    .padding(.bottom, 16)
-                
-                Button(action: showFullArticle) {
-                    Text("Read full story").tint(.black).underline()
-                }
-            }
-        }.scrollIndicators(.hidden)
+        router.navigateTo(.newsDetailWeb(viewModel.article))
     }
 }
 
 #Preview {
-    NewsDetailView(article: ArticleModel.mockArticle()).environmentObject(Router())
+    NewsDetailView(viewModel: NewsDetailView.ViewModel(article: ArticleModel.mockArticle()))
+    .environmentObject(Router())
 }
 

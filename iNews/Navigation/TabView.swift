@@ -14,19 +14,22 @@ struct TabScreenView: View {
     @State var homeRouter = Router()
     @State var favouritesRouter = Router()
     @State var searchRouter = Router()
+    
+    @State var mainPage = MainPage()
+    @State var searchPage = SearchPage()
 
     var body: some View {
         
         TabView(selection: tabSelection()) {
             Group {
-                RouterView(rootView: MainPage())
+                RouterView(rootView: mainPage)
                     .environmentObject(homeRouter)
                     .tabItem {
                         Label("Home", systemImage: "house")
                     }
                     .tag(Tab.home)
                 
-                RouterView(rootView: SearchPage())
+                RouterView(rootView: searchPage)
                     .environmentObject(searchRouter)
                     .tabItem {
                         Label("Search", systemImage: "magnifyingglass")

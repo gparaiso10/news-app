@@ -8,21 +8,47 @@
 import Foundation
 
 extension ArticleModel {
-    init(_ article: Article) {
+    convenience init(_ article: Article) {
         self.init(source: article.source.name ?? "",
                   author: article.author ?? "",
                   title: article.title ?? "",
-                  description: article.description ?? "",
+                  articleDescription: article.description ?? "",
                   url: article.url ?? "",
                   urlToImage: article.urlToImage ?? "",
-                  publishedAt: article.publishedAt ?? "",
+                  publishedAt: article.publishedAt?.ISO8601toBase() ?? "",
                   content: article.content ?? "")
+    }
+    
+//    init(_ article: ArticleData) {
+//        self.init(source: article.source,
+//                  author: article.author,
+//                  title: article.title,
+//                  description: article.articleDescription,
+//                  url: article.url,
+//                  urlToImage: article.urlToImage,
+//                  publishedAt: article.publishedAt,
+//                  content: article.content)
+//    }
+}
+
+extension String {
+    func ISO8601toBase() -> String {
+        let inputFormatter = ISO8601DateFormatter()
+        let outputFormatter = DateFormatter()
+        
+        outputFormatter.dateFormat = "dd/MM/yyyy" // Desired format
+        
+        if let date = inputFormatter.date(from: self) {
+            return outputFormatter.string(from: date)
+        } else {
+            return self
+        }
     }
 }
 
 extension Article {
     init(_ article: ArticleModel) {
-        self.init(source: .init(id: UUID().uuidString, name: article.source), author: article.author, title: article.title, description: article.description, url: article.url, urlToImage: article.urlToImage, publishedAt: article.publishedAt, content: article.content)
+        self.init(source: .init(id: UUID().uuidString, name: article.source), author: article.author, title: article.title, description: article.articleDescription, url: article.url, urlToImage: article.urlToImage, publishedAt: article.publishedAt, content: article.content)
     }
 }
 
@@ -32,7 +58,7 @@ extension ArticleModel {
             source: "Tech News Daily",
             author: "Regina Wilkins",
             title: "Why And How To Delete Your Data From Online Platforms",
-            description: "A groundbreaking AI technology is set to revolutionize industries from healthcare to finance.",
+            articleDescription: "A groundbreaking AI technology is set to revolutionize industries from healthcare to finance.",
             url: "https://technewsdaily.com/news/why-and-how-to-delete-your-data-from-online-platforms/",
             urlToImage: "https://technewsdaily.com/wp-content/uploads/2024/02/The-Basics-Of-Metaverse-350x250.jpg",
             publishedAt: "2024-10-10T10:30:00Z",
@@ -59,7 +85,7 @@ extension ArticleModel {
                 source: "Tech News Daily",
                 author: "Regina Wilkins",
                 title: "Why Does My Dell Laptop Keep Shutting Down? The Ultimate Guide",
-                description: "Understanding the root causes of these shutdowns—whether they stem from hardware malfunctions, software conflicts, or external factors—is crucial for implementing effective solutions.",
+                articleDescription: "Understanding the root causes of these shutdowns—whether they stem from hardware malfunctions, software conflicts, or external factors—is crucial for implementing effective solutions.",
                 url: "https://technewsdaily.com/news/computer/why-does-my-dell-laptop-keep-shutting-down/",
                 urlToImage: "https://technewsdaily.com/wp-content/uploads/2024/02/Why-Does-My-Dell-Laptop-Keep-Shutting-Down-750x500.jpg",
                 publishedAt: "2024-10-10T10:30:00Z",
@@ -69,7 +95,7 @@ extension ArticleModel {
                 source: "BBC News",
                 author: "Helen Willets",
                 title: "Four killed by tornadoes in Florida, as DeSantis warns of more Hurricane Milton flooding",
-                description: "Understanding the root causes of these shutdowns—whether they stem from hardware malfunctions, software conflicts, or external factors—is crucial for implementing effective solutions.",
+                articleDescription: "Understanding the root causes of these shutdowns—whether they stem from hardware malfunctions, software conflicts, or external factors—is crucial for implementing effective solutions.",
                 url: "https://www.bbc.com/news/live/cglkd1l82g7t",
                 urlToImage: "https://ichef.bbci.co.uk/ace/standard/692/cpsprodpb/vivo/live/images/2024/10/10/90311e0d-12e6-4a09-bfd7-b724c31d43f6.jpg.webp",
                 publishedAt: "2024-10-10T10:30:00Z",
@@ -90,6 +116,10 @@ extension ArticleModel {
     func toArticle() -> Article {
         Article(self)
     }
+    
+//    func toData() -> ArticleData {
+//        ArticleData(self)
+//    }
 }
 
 extension Array where Element == Article {

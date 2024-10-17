@@ -6,17 +6,21 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct FavouriteNewsView: View {
     @EnvironmentObject var router: Router
-    @ObservedObject var viewModel = ViewModel()
+//    @ObservedObject var viewModel = ViewModel()
+    
+    @Query private var articles: [ArticleModel]
     
     var body: some View {
-        FavouriteNewsListView(articles: viewModel.favouriteArticles, onTapArticle: showDetail)
-            .withToolbar()
-            .task {
-                await viewModel.fetchFavourites()
-            }
+        List {
+            NewsListView(articles: articles, onTapArticle: showDetail)
+        }
+        .listStyle(.inset)
+        .scrollIndicators(.hidden)
+        .withToolbar()
     }
     
     func showDetail(_ article: ArticleModel) {

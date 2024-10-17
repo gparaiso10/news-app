@@ -7,14 +7,14 @@
 
 import Foundation
 
-struct ArticleModel: Identifiable, Equatable, Hashable {
-    let id = UUID()
-    let source: String
-    let author: String
-    let title: String
-    let description: String
-    let url: String
-    let urlToImage: String
-    let publishedAt: String
-    let content: String
-}
+//struct ArticleModel: Identifiable, Equatable, Hashable {
+//    let id = UUID()
+//    let source: String
+//    let author: String
+//    let title: String
+//    let description: String
+//    let url: String
+//    let urlToImage: String
+//    let publishedAt: String
+//    let content: String
+//}

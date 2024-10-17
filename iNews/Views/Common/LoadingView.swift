@@ -8,10 +8,11 @@
 import SwiftUI
 
 struct LoadingView: View {
+    var text: String = "Loading"
     
     var body: some View {
         VStack {
-            Text("Loading")
+            Text(text)
         }
     }
 }

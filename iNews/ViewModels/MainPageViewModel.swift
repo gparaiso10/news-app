@@ -11,7 +11,7 @@ extension MainPage {
     
     @MainActor
     class ViewModel: ObservableObject {
-        private let api = NewsAPITest() //
+        private let api = NewsAPI() //
         @Published var articles: [NewsCategory : [ArticleModel]] = [:]
         @Published var isLoading: Bool = false
         @Published var errorMessage: String?

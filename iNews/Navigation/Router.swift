@@ -18,7 +18,7 @@ class Router: ObservableObject {
     @MainActor @ViewBuilder func view(for route: Route) -> some View {
         switch route {
         case .newsDetail(let article):
-            NewsDetailView(article: article)
+            NewsDetailView(viewModel: NewsDetailView.ViewModel(article: article))
         case .newsDetailWeb(let article):
             NewsWebView(article: article)
         }

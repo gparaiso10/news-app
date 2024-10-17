@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct iNewsApp: App {
@@ -13,5 +14,6 @@ struct iNewsApp: App {
         WindowGroup {
             TabScreenView()
         }
+        .modelContainer(for: ArticleModel.self)
     }
 }

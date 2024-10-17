@@ -13,49 +13,38 @@ struct SearchPage: View {
     @ObservedObject var viewModel = ViewModel()
     
     var body: some View {
-        VStack (alignment: .center) {
-            HStack {
+        VStack {
+            HStack(alignment: .top) {
                 TextField("Search", text: $viewModel.query)
                 Spacer()
                 Button(action: {
-                    
+                    viewModel.searching = true
                 }) {
                     Image(systemName: "magnifyingglass")
                 }
             }
-        }.task(id: viewModel.searching) {
+            .padding(16)
+            
+            List {
+                NewsListView(articles: viewModel.searchResults, onTapArticle: goToDetail)
+            }
+            .listStyle(.inset)
+            .scrollIndicators(.hidden)
+            Spacer()
+        }
+        .task(id: viewModel.searching) {
             if viewModel.searching {
                 await viewModel.fetchResults()
             }
         }
     }
+    
+    func goToDetail(_ article: ArticleModel) {
+        router.navigateTo(.newsDetail(article))
+    }
 }
 
 
-extension SearchPage {
-    @MainActor
-    class ViewModel: ObservableObject {
-        var newsAPI = NewsAPITest()
-        @State var searchResults: [ArticleModel] = []
-        @State var query: String = ""
-        @State var searching: Bool = false
-        
-        func fetchResults() async {
-            do {
-                searching = true
-                let news = try await newsAPI.fetchNews()
-                if news.status == Status.ok.rawValue {
-                    searchResults = news.articles?
-                        .toModel()
-                        .filter{ $0.title != "[Removed]" } ?? []
-                } else {
-                    searchResults = []
-                }
-                searching = false
-            } catch {
-                //handleError(error: error)
-            }
-            
-        }
-    }
+#Preview {
+    SearchPage().environmentObject(Router())
 }
